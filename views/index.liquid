@@ -10,16 +10,18 @@
 <header>
   <nav>
     <h1>Squadpage</h1>
-    <img src="" alt="Terug naar home">
+    <img src="/assests/hva-white.svg" alt="Ga naar home" width="50">
   </nav>
 </header>
 
 <main>
   <section>
     <h2>Filter de studenten</h2>
-    <form action="">
-      <input type="checkbox">
-      <label for=""></label>
+    <form>
+      {% for person in persons %}
+        <input type="checkbox">
+        <label>{{person.fav_color}}</label>
+      {% endfor %}
     </form>
   </section>
 
@@ -27,10 +29,13 @@
     <h2>Overzicht van studenten</h2>
     <ul>
       {% for person in persons %}
-        <li>
+        <li class="student-card" style="--fav-color: {{ person.fav_color }};">
           <article>
             <h3>{{ person.name }}</h3>
-            <a href=""></a>
+            <a href="https://github.com/{{ person.github_handle }}">
+              @{{ person.github_handle }}
+              <img src="/assests/link.svg" alt="Ga naar de GitHub pagina van {{ person.name }}" width="10">
+            </a>
           </article>
           <img src="{{ person.avatar }}" alt="Avatar van student" width="50">
         </li>
@@ -39,4 +44,5 @@
   </section>
 </main>
 
+<script src="/scripts/client.js"></script>
 {% render 'partials/foot.liquid', squads: squads %}
