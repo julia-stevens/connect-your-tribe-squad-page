@@ -1,3 +1,26 @@
+header {
+    background-color: var(--header-bg-color);
+    color: var(--header-font-color);
+
+    border-radius: 0 0 var(--br-sections) var(--br-sections);
+
+    nav {
+        display: flex; 
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        padding: 1rem;
+        width: 100%;
+
+        img {
+            order: -1;
+
+            width: 30px;
+            filter: brightness(0) saturate(100%) invert(85%) sepia(38%) saturate(582%) hue-rotate(97deg) brightness(98%) contrast(84%);
+        }
+    }
+}
+
 .selected-students {
     margin-top: 5rem;
 
