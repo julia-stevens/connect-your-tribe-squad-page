@@ -1,10 +1,42 @@
-{% render 'partials/head.liquid', title: 'Squad page' %}
+{% render 'partials/head.liquid' %}
 
-<h2>Students</h2>
+{% comment %} <h2>Students</h2>
 <ul>
   {% for person in persons %}
     <li><a href="/student/{{ person.id }}">{{ person.name }}</a></li>
   {% endfor %}
-</ul>
+</ul>  {% endcomment %}
+
+<header>
+  <nav>
+    <h1>Squadpage</h1>
+    <img src="" alt="Terug naar home">
+  </nav>
+</header>
+
+<main>
+  <section>
+    <h2>Filter de studenten</h2>
+    <form action="">
+      <input type="checkbox">
+      <label for=""></label>
+    </form>
+  </section>
+
+  <section>
+    <h2>Overzicht van studenten</h2>
+    <ul>
+      {% for person in persons %}
+        <li>
+          <article>
+            <h3>{{ person.name }}</h3>
+            <a href=""></a>
+          </article>
+          <img src="{{ person.avatar }}" alt="Avatar van student" width="50">
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+</main>
 
 {% render 'partials/foot.liquid', squads: squads %}
