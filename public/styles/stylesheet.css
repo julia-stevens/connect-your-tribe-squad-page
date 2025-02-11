@@ -1,0 +1,44 @@
+/* Font */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+/* General */
+* {
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
+
+/* Custom */
+body {
+    /* Colors */
+    --header-bg-color: #050542; 
+    --header-font-color: #66e5bf; 
+    --highlight-bg-color: #a675f4; 
+    --main-bg-color: #ffffff;
+
+    /* Border radius */
+    --br-sections: ; 
+    --br-images: ; 
+
+    /* Font */
+    font-size: 16px; 
+    font-family: "Open Sans", serif;  
+    font-weight: 400; 
+
+    /* Font weights */
+    --weight-light: 300; 
+    --weight-medium: 500; 
+    --weight-semibold: 600; 
+    --weight-bold: 700; 
+    --weight-extrabold: 800; 
+}
+
+/* List */
+li {
+    list-style-type: none;
+}
+
+.student-card {
+    background-color: var(--fav-color);
+}
+
