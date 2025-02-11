@@ -17,8 +17,9 @@ body {
     --main-bg-color: #ffffff;
 
     /* Border radius */
-    --br-sections: ; 
-    --br-images: ; 
+    --br-sections: 1.5rem; 
+    --br-images: .5rem; 
+    --br-cards: .5rem;
 
     /* Font */
     font-size: 16px; 
@@ -38,7 +39,12 @@ li {
     list-style-type: none;
 }
 
-.student-card {
-    background-color: var(--fav-color);
+main {
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
 }
 
+/* h1 {
+    font-size: 2rem;
+} */

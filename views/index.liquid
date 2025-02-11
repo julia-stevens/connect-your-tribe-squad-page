@@ -27,17 +27,17 @@
 
   <section>
     <h2>Overzicht van studenten</h2>
-    <ul>
+    <ul class="selected-students">
       {% for person in persons %}
-        <li class="student-card" style="--fav-color: {{ person.fav_color }};">
-          <article>
+        <li class="student-card">
+          <article style="--fav-color: {{ person.fav_color }};">
             <h3>{{ person.name }}</h3>
             <a href="https://github.com/{{ person.github_handle }}">
-              @{{ person.github_handle }}
               <img src="/assests/link.svg" alt="Ga naar de GitHub pagina van {{ person.name }}" width="10">
+              @{{ person.github_handle }}
             </a>
           </article>
-          <img src="{{ person.avatar }}" alt="Avatar van student" width="50">
+          <img class="student-avatar" src="{{ person.avatar }}" alt="Avatar van student" width="50">
         </li>
       {% endfor %}
     </ul>
