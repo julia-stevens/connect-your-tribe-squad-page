@@ -16,11 +16,10 @@
 
 <main>
   <section>
-    <h2>Filter de studenten</h2>
+    <h2>Filter de studenten</h2>  
     <form>
-      {% for person in persons %}
-        <input type="checkbox">
-        <label>{{person.fav_color}}</label>
+      {% for data in colors %}
+        <label><input type="checkbox"> {{ data.count.fav_color }}</label> 
       {% endfor %}
     </form>
   </section>
@@ -29,13 +28,14 @@
     <h2>Overzicht van studenten</h2>
     <ul class="selected-students">
       {% for person in persons %}
-        <li class="student-card">
-          <article style="--fav-color: {{ person.fav_color }};">
+        <li class="student-card"  style="--fav-color: {{ person.fav_color }};">
+          <article>
             <h3>{{ person.name }}</h3>
             <a href="https://github.com/{{ person.github_handle }}">
               <img src="/assests/link.svg" alt="Ga naar de GitHub pagina van {{ person.name }}" width="10">
               @{{ person.github_handle }}
             </a>
+            <p>{{ person.fav_color }}</p>
           </article>
           <img class="student-avatar" src="{{ person.avatar }}" alt="Avatar van student" width="50">
         </li>
