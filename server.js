@@ -13,6 +13,21 @@ import { Liquid } from 'liquidjs';
 // Gebruik hiervoor de documentatie van https://directus.io/docs/guides/connect/query-parameters
 // En de oefeningen uit https://github.com/fdnd-task/connect-your-tribe-squad-page/blob/main/docs/squad-page-ontwerpen.md
 
+// general
+const apiEndpoint = "https://fdnd.directus.app/items/person";
+const filterStudentsCurrentYear = "&filter{_and:[{squads:{squad_id:{tribe:{name:FDND%20Jaar%201}}}},{squads:{squad_id:{cohort:2425}}}]}";
+
+// person response
+const sortByName = "?sort=name";
+const fields = "&fields=name,github_handle,avatar,fav_color";
+
+// color response
+const fieldFavColor = "?fields=fav_color";
+const filterOnlyFilledFavColor = "&filter[fav_color][_neq]=null";
+const groupByFavColor = "&groupBy=fav_color";
+const countFavColor = "&aggregate[count]=fav_color";
+const sortByCountFavColorDesc = "&sort=-count.fav_color";
+
 // Haal alle eerstejaars squads uit de WHOIS API op van dit jaar (2024–2025)
 const squadResponse = await fetch('https://fdnd.directus.app/items/squad?filter={"_and":[{"cohort":"2425"},{"tribe":{"name":"FDND Jaar 1"}}]}')
 
@@ -21,7 +36,6 @@ const squadResponseJSON = await squadResponse.json()
 
 // Controleer de data in je console (Let op: dit is _niet_ de console van je browser, maar van NodeJS, in je terminal)
 // console.log(squadResponseJSON)
-
 
 // Maak een nieuwe Express applicatie aan, waarin we de server configureren
 const app = express()
@@ -44,46 +58,27 @@ app.use(express.urlencoded({extended: true}))
 // Om Views weer te geven, heb je Routes nodig
 // Maak een GET route voor de index
 app.get('/', async function (request, response) {
-  // Haal alle personen uit de WHOIS API op, van dit jaar  
-  const colorsResponse = await fetch("https://fdnd.directus.app/items/person/?fields=fav_color&filter[fav_color][_neq]=null&groupBy=fav_color&aggregate[count]=fav_color&sort=-count.fav_color&filter{_and:[{squads:{squad_id:{tribe:{name:FDND%20Jaar%201}}}},{squads:{squad_id:{cohort:2425}}}]}");
-
-  // En haal daarvan de JSON op
+  const colorsResponse = await fetch(`${apiEndpoint}/${fieldFavColor}${filterOnlyFilledFavColor}${groupByFavColor}${countFavColor}${sortByCountFavColorDesc}${filterStudentsCurrentYear}`)
   const colorsResponseJSON = await colorsResponse.json()
-
   let personResponseJSON
 
   if(request.query.fav_color) {
     let hexColor = request.query.fav_color;
     hexColor = hexColor.slice(1);
-
-    const personResponse = await fetch(`https://fdnd.directus.app/items/person/?sort=name&fields=name,github_handle,avatar,fav_color&filter={"fav_color":"%23${hexColor}"}&filter{_and:[{squads:{squad_id:{tribe:{name:FDND%20Jaar%201}}}},{squads:{squad_id:{cohort:2425}}}]}`);
-
+    const personResponse = await fetch(`${apiEndpoint}/${sortByName}${fields}&filter={"fav_color":"%23${hexColor}"}${filterStudentsCurrentYear}`)
     personResponseJSON = await personResponse.json();  
   } else { 
-      const personResponse = await fetch("https://fdnd.directus.app/items/person/?sort=name&fields=name,github_handle,avatar,fav_color&filter[fav_color][_neq]=null&filter{_and:[{squads:{squad_id:{tribe:{name:FDND%20Jaar%201}}}},{squads:{squad_id:{cohort:2425}}}]}")
-
+      const personResponse = await fetch(`${apiEndpoint}/${sortByName}${fields}${filterOnlyFilledFavColor}${filterStudentsCurrentYear}`)
       personResponseJSON = await personResponse.json();  
   }
-
-  // tip: schrijf URL in aparte delen om onnodige herhaling van code te voorkomen (bovenin server bestand)
-
-  // personResponseJSON bevat gegevens van alle personen uit alle squads van dit jaar
-  // Je zou dat hier kunnen filteren, sorteren, of zelfs aanpassen, voordat je het doorgeeft aan de view
-
-  // Render index.liquid uit de views map en geef de opgehaalde data mee als variabele, genaamd persons
-  // Geef ook de eerder opgehaalde squad data mee aan de view
   response.render('index.liquid', {persons: personResponseJSON.data, squads: squadResponseJSON.data, colors: colorsResponseJSON.data})
 })
 
 // statisch
 // app.get('/kleur/zwart', async function (request, response){
 //   const hexcode = "9914e1";
-
 //   const personResponse = await fetch(`https://fdnd.directus.app/items/person/?sort=name&fields=name,github_handle,avatar,fav_color&filter={"fav_color":"%23${hexcode}"}&filter{_and:[{squads:{squad_id:{tribe:{name:FDND%20Jaar%201}}}},{squads:{squad_id:{cohort:2425}}}]}`)
-
-
 //   const personResponseJSON = await personResponse.json()
-
 //   response.render('kleur.liquid', {persons: personResponseJSON.data})
 // }) 
 
@@ -91,10 +86,8 @@ app.get('/', async function (request, response) {
 // app.get('/kleur/:fav_color', async function (request, response){
 //   let hexColor = request.params.fav_color;
 //   hexColor = hexColor.slice(1);
-
 //   const personColorResponse = await fetch(`https://fdnd.directus.app/items/person/?sort=name&fields=name,github_handle,avatar,fav_color&filter={"fav_color":"%23${hexColor}"}&filter{_and:[{squads:{squad_id:{tribe:{name:FDND%20Jaar%201}}}},{squads:{squad_id:{cohort:2425}}}]}`);
 //   const personColorResponseJSON = await personColorResponse.json();
-  
 //   response.render('kleur.liquid', {persons: personColorResponseJSON.data})
 // })
 
