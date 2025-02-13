@@ -1,6 +1,23 @@
 {% render 'partials/head.liquid' %}
 
-<section>
+<header>
+  <nav>
+    <h1>Squadpage</h1>
+    <img src="/assests/hva-white.svg" alt="Ga naar home" width="50">
+  </nav>
+</header>
+
+<main>
+  <section>
+    <h2>Filter de studenten</h2>  
+    <form id="colorFilterForm" action="/kleur" method="GET">
+      {% for data in colors %}
+        <label><input type="checkbox" name="fav_color" value="{{ data.fav_color }}" class="color-checkbox">{{ data.fav_color }} <strong>{{ data.count.fav_color }}</strong></label> 
+      {% endfor %}
+    </form>
+  </section>
+
+  <section>
     <h2>Overzicht van studenten</h2>
     <ul class="selected-students">
       {% for person in persons %}
@@ -18,5 +35,7 @@
       {% endfor %}
     </ul>
   </section>
+</main>
 
+<script src="/scripts/client.js"></script>
 {% render 'partials/foot.liquid', squads: squads %}

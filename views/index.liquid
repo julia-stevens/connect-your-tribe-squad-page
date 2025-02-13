@@ -1,12 +1,5 @@
 {% render 'partials/head.liquid' %}
 
-{% comment %} <h2>Students</h2>
-<ul>
-  {% for person in persons %}
-    <li><a href="/student/{{ person.id }}">{{ person.name }}</a></li>
-  {% endfor %}
-</ul>  {% endcomment %}
-
 <header>
   <nav>
     <h1>Squadpage</h1>
@@ -17,10 +10,11 @@
 <main>
   <section>
     <h2>Filter de studenten</h2>  
-    <form>
+    <form action="/">
       {% for data in colors %}
-        <label><input type="checkbox">{{ data.fav_color }} <strong>{{ data.count.fav_color }}</strong></label> 
+        <label><input type="radio" name="fav_color" value="{{ data.fav_color }}" class="color-input">{{ data.fav_color }} <strong>{{ data.count.fav_color }}</strong></label> 
       {% endfor %}
+      <button>Filter op kleur</button>
     </form>
   </section>
 
