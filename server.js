@@ -41,7 +41,6 @@ app.set('views', './views')
 // Zorg dat werken met request data makkelijker wordt
 app.use(express.urlencoded({extended: true}))
 
-
 // Om Views weer te geven, heb je Routes nodig
 // Maak een GET route voor de index
 app.get('/', async function (request, response) {
@@ -62,13 +61,38 @@ app.get('/', async function (request, response) {
   response.render('index.liquid', {persons: personResponseJSON.data, squads: squadResponseJSON.data, colors: colorsResponseJSON.data})
 })
 
+// app.get('/kleur/zwart', async function (request, response){
+//   const hexcode = "9914e1";
+
+//   const personResponse = await fetch(`https://fdnd.directus.app/items/person/?sort=name&fields=name,github_handle,avatar,fav_color&filter={"fav_color":"%23${hexcode}"}&filter{_and:[{squads:{squad_id:{tribe:{name:FDND%20Jaar%201}}}},{squads:{squad_id:{cohort:2425}}}]}`)
+
+
+//   const personResponseJSON = await personResponse.json()
+
+//   response.render('kleur.liquid', {persons: personResponseJSON.data})
+// }) 
+
+
+app.get('/kleur/:fav_color', async function (request, response){
+  let hexColor = request.params.fav_color;
+  
+  hexColor = hexColor.slice(1);
+
+  console.log(hexColor);
+
+  const personColorResponse = await fetch(`https://fdnd.directus.app/items/person/?sort=name&fields=name,github_handle,avatar,fav_color&filter={"fav_color":"%23${hexColor}"}&filter{_and:[{squads:{squad_id:{tribe:{name:FDND%20Jaar%201}}}},{squads:{squad_id:{cohort:2425}}}]}`);
+
+  const personColorResponseJSON = await personColorResponse.json();
+  
+  response.render('kleur.liquid', {persons: personColorResponseJSON.data})
+})
+
 // Maak een POST route voor de index; hiermee kun je bijvoorbeeld formulieren afvangen
 app.post('/', async function (request, response) {
   // Je zou hier data kunnen opslaan, of veranderen, of wat je maar wilt
   // Er is nog geen afhandeling van POST, redirect naar GET op /
   response.redirect(303, '/')
 })
-
 
 // Maak een GET route voor een detailpagina met een route parameter, id
 // Zie de documentatie van Express voor meer info: https://expressjs.com/en/guide/routing.html#route-parameters
@@ -82,7 +106,6 @@ app.get('/student/:id', async function (request, response) {
   // Geef ook de eerder opgehaalde squad data mee aan de view
   response.render('student.liquid', {person: personDetailResponseJSON.data, squads: squadResponseJSON.data})
 })
-
 
 // Stel het poortnummer in waar express op moet gaan luisteren
 app.set('port', process.env.PORT || 8000)
