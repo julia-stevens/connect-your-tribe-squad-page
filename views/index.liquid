@@ -8,13 +8,13 @@
 </header>
 
 <main>
-  <section>
+  <section class="filter">
     <h2>Filter de studenten</h2>  
     <form action="/">
       {% for data in colors %}
-        <label><input type="radio" name="fav_color" value="{{ data.fav_color }}" class="color-input">{{ data.fav_color }} <strong>{{ data.count.fav_color }}</strong></label> 
+        <label style="--fav-color: {{ data.fav_color }};"><input type="radio" name="fav_color" value="{{ data.fav_color }}" class="color-input"><strong>{{ data.fav_color }} ({{ data.count.fav_color }}x)</strong></label> 
       {% endfor %}
-      <button>Filter op kleur</button>
+      <button><strong>Filter op kleur</strong></button>
     </form>
   </section>
 
@@ -22,16 +22,16 @@
     <h2>Overzicht van studenten</h2>
     <ul class="selected-students">
       {% for person in persons %}
-        <li class="student-card"  style="--fav-color: {{ person.fav_color }};">
-          <article>
+        <li class="student-card" style="--fav-color: {{ person.fav_color }};">
+          <article style="--fav-color: {{ person.fav_color }};">
             <h3>{{ person.name }}</h3>
             <a href="https://github.com/{{ person.github_handle }}">
               <img src="/assests/link.svg" alt="Ga naar de GitHub pagina van {{ person.name }}" width="10">
               @{{ person.github_handle }}
             </a>
-            <p>{{ person.fav_color }}</p>
+            {% comment %} <p>{{ person.fav_color }}</p> {% endcomment %}
           </article>
-          <img class="student-avatar" src="{{ person.avatar }}" alt="Avatar van student" width="50">
+          <img class="student-avatar" src="{{ person.avatar | default: "/assests/no-pic.webp"}}" alt="Avatar van student" width="50">
         </li>
       {% endfor %}
     </ul>

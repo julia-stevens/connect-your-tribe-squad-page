@@ -20,10 +20,12 @@ body {
     --br-sections: 1.5rem; 
     --br-images: .5rem; 
     --br-cards: .5rem;
+    --br-buttons: .3rem;
 
     /* Font */
     font-size: 16px; 
-    font-family: "Open Sans", serif;  
+    --font-family: "Open Sans", serif;  
+    font-family: var(--font-family);
     font-weight: 400; 
 
     /* Font weights */
@@ -39,12 +41,50 @@ li {
     list-style-type: none;
 }
 
-main {
-    display: flex; 
-    flex-direction: column;
-    align-items: center;
+form {
+    label {
+        color: var(--fav-color);
+    }
+
+    button {
+        position: absolute; 
+        bottom: 1rem; 
+        left: 50%; 
+        translate: -50% 0%; 
+    }
 }
 
-/* h1 {
-    font-size: 2rem;
-} */
+button {
+    appearance: none;
+    background: transparent;
+    border: none;
+    font-family: var(--font-family);
+    font-size: 16px;
+    background-color: var(--header-bg-color);
+    color: var(--header-font-color);
+    padding: .5rem 1rem;
+    border-radius: var(--br-buttons);
+    cursor: pointer; 
+    transition: .2s ease-in-out;
+
+    &:hover {
+        background-color: var(--header-font-color);
+        color: var(--header-bg-color);
+    }
+}
+
+.student-card {
+    background-color: var(--fav-color);
+  }
+  
+  .student-card a,
+  .student-card h3 {
+    filter: invert(1) contrast(100%);
+  }
+  
+  .student-card img {
+    filter: none; /* Ensure images are not inverted */
+  }
+  
+  
+  
