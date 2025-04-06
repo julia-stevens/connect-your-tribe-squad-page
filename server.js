@@ -4,6 +4,7 @@ import express from 'express'
 
 // Importeer de Liquid package (ook als dependency via npm geïnstalleerd)
 import { Liquid } from 'liquidjs';
+// import { isPropertyAccessToken } from 'liquidjs/dist/util';
 
 // Je kunt de volgende URLs uit onze API gebruiken:
 // - https://fdnd.directus.app/items/tribe
@@ -55,6 +56,7 @@ app.set('views', './views')
 // Zorg dat werken met request data makkelijker wordt
 app.use(express.urlencoded({extended: true}))
 
+
 // Om Views weer te geven, heb je Routes nodig
 // Maak een GET route voor de index
 app.get('/', async function (request, response) {
@@ -74,7 +76,16 @@ app.get('/', async function (request, response) {
   response.render('index.liquid', {persons: personResponseJSON.data, squads: squadResponseJSON.data, colors: colorsResponseJSON.data})
 })
 
-// statisch
+app.get('/birthdays', async function (request, response){
+  const personReponse = await fetch('https://fdnd.directus.app/items/person/?fields=name,birthdate&filter=%7B%22_and%22:%5B%7B%22squads%22:%7B%22squad_id%22:%7B%22tribe%22:%7B%22name%22:%22FDND%20Jaar%201%22%7D%7D%7D%7D,%7B%22squads%22:%7B%22squad_id%22:%7B%22cohort%22:%222425%22%7D%7D%7D%5D%7D&sort=birthdate')
+  const personResponseJSON = await personReponse.json()
+
+  response.render('birthdays.liquid', {persons: personResponseJSON.data})
+})
+
+
+
+// // statisch
 // app.get('/kleur/zwart', async function (request, response){
 //   const hexcode = "9914e1";
 //   const personResponse = await fetch(`https://fdnd.directus.app/items/person/?sort=name&fields=name,github_handle,avatar,fav_color&filter={"fav_color":"%23${hexcode}"}&filter{_and:[{squads:{squad_id:{tribe:{name:FDND%20Jaar%201}}}},{squads:{squad_id:{cohort:2425}}}]}`)
@@ -82,7 +93,7 @@ app.get('/', async function (request, response) {
 //   response.render('kleur.liquid', {persons: personResponseJSON.data})
 // }) 
 
-// dynamisch --> kleur is nieuwe pagina
+// // dynamisch --> kleur is nieuwe pagina
 // app.get('/kleur/:fav_color', async function (request, response){
 //   let hexColor = request.params.fav_color;
 //   hexColor = hexColor.slice(1);
@@ -96,6 +107,17 @@ app.post('/', async function (request, response) {
   // Je zou hier data kunnen opslaan, of veranderen, of wat je maar wilt
   // Er is nog geen afhandeling van POST, redirect naar GET op /
   response.redirect(303, '/')
+})
+
+let messages = []
+
+app.get('/berichten', async function (request, response) {
+  response.render('messages.liquid', {messages: messages})
+})
+
+app.post('/berichten', async function (request, response) {
+  messages.push(request.body.messageInput)
+  response.redirect(303, '/berichten') // redirect en stuur daarna terug met GET route
 })
 
 // Maak een GET route voor een detailpagina met een route parameter, id

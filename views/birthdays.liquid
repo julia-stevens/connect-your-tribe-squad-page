@@ -1,0 +1,11 @@
+{% render 'partials/head.liquid' %}
+
+<h1>Birthday Calander FDND</h1>
+
+<ul>
+    {% for person in persons %}
+        <li>{{ person.name }} <strong>{{ person.birthdate | date: "%d-%m-%Y"}}</strong></li>
+    {% endfor %}
+</ul>
+
+{% render 'partials/foot.liquid', squads: squads %}

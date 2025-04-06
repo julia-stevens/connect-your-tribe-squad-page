@@ -27,3 +27,13 @@ if (hexColor) { // als er een hex code is, dan voer uit
 //     let checkedInput = event.target.value.replace("#", "%23"); // Encode hex
 //     window.location.href = `/kleur/${checkedInput}`;
 // }
+
+
+document.querySelector('form button').hidden = true;
+
+document.querySelectorAll('form input[type="radio"]').forEach(function (el) {
+    el.addEventListener('click', function () {
+        this.form.submit()
+    })
+    el.hidden = true;
+})

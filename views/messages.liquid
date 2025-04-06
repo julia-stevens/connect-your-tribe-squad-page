@@ -1,0 +1,15 @@
+<h1>Oefenen met een POST</h1>
+<h2>Maandag 24-02-25</h2>
+
+<form method="post" action="/berichten">
+    <label>Message
+        <input type="text" name="messageInput">
+    </label>
+    <button type="submit">Submit</button>
+</form>
+
+<ul>
+    {% for message in messages %}
+        <li>{{ message }}</li>
+    {% endfor %}
+</ul>
